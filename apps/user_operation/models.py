@@ -10,7 +10,7 @@ User = get_user_model()
 class UserFav(models.Model):
     """用户收藏"""
     user = models.ForeignKey(User, verbose_name='用户')
-    goods = models.ForeignKey(Goods, verbose_name='商品')
+    goods = models.ForeignKey(Goods, verbose_name='商品', help_text='商品ID')
     add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')
 
     class Meta:
@@ -19,7 +19,7 @@ class UserFav(models.Model):
         unique_together = ('user', 'goods')
 
     def __str__(self):
-        return self.user.name
+        return self.user.username
 
 
 class UserLeavingMessage(models.Model):
@@ -36,7 +36,7 @@ class UserLeavingMessage(models.Model):
                                        help_text='留言类型:1(留言),2(投诉),3(询问),4(售后)')
     subject = models.CharField(max_length=100, default='', verbose_name='主题')
     message = models.TextField(default='', verbose_name='留言内容', help_text='留言内容')
-    file = models.FileField(verbose_name='上传的文件', help_text='上传的文件')
+    file = models.FileField(upload_to='message/images/', verbose_name='上传的文件', help_text='上传的文件')
     add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')
 
     class Meta:
@@ -50,6 +50,8 @@ class UserLeavingMessage(models.Model):
 class UserAddress(models.Model):
     """用户收货地址"""
     user = models.ForeignKey(User, verbose_name='用户')
+    province = models.CharField(max_length=100,default='',verbose_name='省份')
+    city = models.CharField(max_length=100,default='',verbose_name='城市')
     district = models.CharField(max_length=100, default='', verbose_name='区域')
     address = models.CharField(max_length=100, default='', verbose_name='详细地址')
     signer_name = models.CharField(max_length=100, default='', verbose_name='签收人')
