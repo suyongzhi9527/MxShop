@@ -23,9 +23,10 @@ from rest_framework.routers import DefaultRouter
 from rest_framework.authtoken import views
 from rest_framework_jwt.views import obtain_jwt_token
 
-from goods.views import GoodsListViewSet, CategoryViewSet,BannerViewset
+from goods.views import GoodsListViewSet, CategoryViewSet,BannerViewset,HotSearchViewset,IndexCategoryViewset
 from apps.users.views import SmsCodeViewset, UserViewset
 from user_operation.views import UserFavViewset, LeavingMessageViewset,AddressViewset
+from trade.views import ShoppingCartViewSet,OrderViewSet
 
 router = DefaultRouter()
 
@@ -45,11 +46,23 @@ router.register(r'userfavs', UserFavViewset, base_name="userfavs")
 # 留言
 router.register(r'messages', LeavingMessageViewset, base_name="messages")
 
+# 热词搜索
+router.register(r'hotsearchs', HotSearchViewset, base_name="hotsearchs")
+
 # 收货地址
 router.register(r'address', AddressViewset, base_name="address")
 
 # 轮播图
 router.register(r'banners', BannerViewset, base_name="banners")
+
+# 购物车
+router.register(r'shopcarts', ShoppingCartViewSet, base_name="shopcarts")
+
+# 订单相关
+router.register(r'orders', OrderViewSet, base_name="orders")
+
+# 首页商品系列数据
+router.register(r'indexgoods', IndexCategoryViewset, base_name="indexgoods")
 
 goods_list = GoodsListViewSet.as_view({
     'get': 'list',
@@ -71,5 +84,5 @@ urlpatterns = [
     url(r'^api-token-auth/', views.obtain_auth_token),
 
     # jwt的认证接口
-    url(r'^login/', obtain_jwt_token),
+    url(r'^login/$', obtain_jwt_token),
 ]
